@@ -1,5 +1,6 @@
 #include "pixels.h"
 
+#include <cmath>
 
 pixels::pixels(double dz)
 {

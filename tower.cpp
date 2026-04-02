@@ -1,5 +1,7 @@
 #include "tower.h"
 
+#include <cmath>
+
 //**************************************************************
   /**
    * Constructor to set up a tower of HiRA detectors
