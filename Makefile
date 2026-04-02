@@ -11,7 +11,7 @@ OUT = simlib.a
 
 
 #C++ compiler flags
-CCFLAGS = -O2 -ow -std=c++14 -I$(shell  root-config --incdir)
+CCFLAGS = -O2 -ow -std=c++17 -I$(shell  root-config --incdir)
 
 #LD flags
 LDFLAGS = -lgsl -lgslcblas $(shell root-config --libs)
