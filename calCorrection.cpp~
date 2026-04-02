@@ -1,0 +1,66 @@
+#include "calCorrection.h"
+
+double calCorrection::deltaE_alpha(double E)
+{
+  const double c1 = 250;
+  const double c2 = .00893;
+  const double c3 = -5.0645;
+  const double c4 = 0.0001;
+
+double deltaE = (E-c1)*c2 + c3 + c4*pow(E-c1,2);
+return deltaE;
+}
+
+double calCorrection::deltaE_He3(double E)
+{
+
+/* 
+   // no vpeak
+   const c3 = -2.94;
+   const c2 = 0.
+*/
+/*
+  // no vpeak
+  const double c2 = .0195;
+  const double c3 = -2.73;
+*/
+  const double c1 = 192;
+  const double c2 = .0195;
+  const double c3 = -2.92;
+  const double c4 = 0.000;
+
+double deltaE = (E-c1)*c2 + c3 + c4*pow(E-c1,2);
+return deltaE;
+}
+double calCorrection::deltaE_Li6(double E)
+{
+  const double c1 = 350;
+  const double c2 = -.028;
+  const double c3 = -1.29;
+  const double c4 = 0.000;
+
+double deltaE = (E-c1)*c2 + c3 + c4*pow(E-c1,2);
+return deltaE;
+}
+
+double calCorrection::deltaE_H2(double E)
+{
+  const double c1 = 96.8;
+  const double c2 = -0.027;
+  const double c3 = -5.99;
+  const double c4 = 0.000;
+
+double deltaE = (E-c1)*c2 + c3 + c4*pow(E-c1,2);
+return deltaE;
+}
+
+double calCorrection::deltaE_Be9(double E)
+{
+  const double c1 = 490.6;
+  const double c2 = -0.0788;
+  const double c3 = 9.138;
+  const double c4 = 0.000;
+
+double deltaE = (E-c1)*c2 + c3 + c4*pow(E-c1,2);
+return deltaE;
+}

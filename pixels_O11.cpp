@@ -1,0 +1,115 @@
+#include "pixels_O11.h"
+
+
+
+
+
+pixels_O11::pixels_O11( float extra_offset)
+{
+
+  ifstream ifile;
+  ifile.open("/home/Oxygen11/simlib/teles.dat");
+  if (!ifile.is_open())
+    {
+      cout << "pixels data found not found" << endl;
+      abort();
+    }
+
+  float target_offset = -0.0180753; //target ladder thickness + offset from blocker
+  target_offset = -0.0225 + extra_offset;
+
+  float xcenter = 0.;
+  float ycenter = 0.;
+  float zcenter = 0.;
+  float xhoriz = 0.; 
+  float yhoriz = 0.;
+  float zhoriz = 0.;
+  float xdiag = 0.;
+  float ydiag = 0.;
+  float zdiag = 0.;
+
+  float activex = 6.4;
+  float activey = 6.4;
+
+
+  float rcenter[3],rback[3],rdiag[3],rnormal[3],rfront[3];
+
+  for (int i = 0; i<3; i++)
+    {
+      rcenter[i] = 0.;
+      rback[i] = 0.;
+      rdiag[i] = 0.;
+      rnormal[i] = 0.;
+      rfront[i] = 0.;
+    }
+
+  int itele;
+  for (int id=0;id<14;id++)
+    {
+      ifile >> itele >> xcenter >> ycenter >> zcenter >> xhoriz >> yhoriz >> zhoriz >> xdiag >> ydiag >> zdiag;
+
+  zcenter = zcenter + target_offset;
+
+  findVectors(rcenter, rback, rdiag, rnormal, rfront, xcenter, ycenter, zcenter, xhoriz, yhoriz, zhoriz, xdiag, ydiag, zdiag);
+
+  Tel[itele] = new CTele(rcenter,rfront,rback,activex,activey);
+  
+  Tel[itele]->getCsICenters(itele);
+
+    }
+
+}
+
+pixels_O11::~pixels_O11()
+{
+  for (int i=0;i<14;i++) delete Tel[i];
+}
+
+
+void pixels_O11::findVectors(float *rcenter, float *rback, float *rdiag, float *rnormal, float *rfront, float xcenter0, float ycenter0, float zcenter0, float xhoriz0, float yhoriz0, float zhoriz0, float xdiag0, float ydiag0, float zdiag0)
+{
+  float m_to_cm = 100.; //to convert from meters to centimeters
+
+  rcenter[0] = m_to_cm*xcenter0;
+  rcenter[1] = m_to_cm*ycenter0;
+  rcenter[2] = m_to_cm*zcenter0;
+
+  float rfront_mag = sqrt(pow(xhoriz0,2) + pow(yhoriz0,2) + pow(zhoriz0,2));
+
+  rfront[0] = xhoriz0/rfront_mag; //go left to right (beam right point - beam left point)
+  rfront[1] = yhoriz0/rfront_mag; 
+  rfront[2] = zhoriz0/rfront_mag;
+
+  rdiag[0] = -xdiag0; // beam left point  - beam right point (this is wrong, this is a later comment)
+  rdiag[1] = -ydiag0; 
+  rdiag[2] = -zdiag0;
+
+  rnormal[0] = rfront[1]*rdiag[2] - rfront[2]*rdiag[1];
+  rnormal[1] = rfront[2]*rdiag[0] - rfront[0]*rdiag[2];
+  rnormal[2] = rfront[0]*rdiag[1] - rfront[1]*rdiag[0];
+
+  float rnormal_mag = sqrt(pow(rnormal[0],2) + pow(rnormal[1],2) + pow(rnormal[2],2));
+
+  rnormal[0] = rnormal[0]/rnormal_mag;
+  rnormal[1] = rnormal[1]/rnormal_mag;
+  rnormal[2] = rnormal[2]/rnormal_mag;
+
+  //rback = rfront x rnormal
+
+  rback[0] = rfront[1]*rnormal[2] - rfront[2]*rnormal[1];
+  rback[1] = rfront[2]*rnormal[0] - rfront[0]*rnormal[2];
+  rback[2] = rfront[0]*rnormal[1] - rfront[1]*rnormal[0];
+
+  float rback_mag = sqrt(pow(rback[0],2) + pow(rback[1],2) + pow(rback[2],2));
+
+  rback[0] = rback[0]/rback_mag;
+  rback[1] = rback[1]/rback_mag;  
+  rback[2] = rback[2]/rback_mag;
+}
+//**********************************************
+float pixels_O11::getAngle(int itele, int ifront, int iback)
+{
+  theta = Tel[itele]->getTheta(ifront,iback);
+  phi = Tel[itele]->phiRecon;
+  return theta; 
+}

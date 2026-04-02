@@ -1,0 +1,16 @@
+#include "tele.h"
+#include <fstream>
+
+using namespace std;
+
+class pixels_O11
+{
+ public:
+  pixels_O11(float extra_Offset = 0);
+  ~pixels_O11();
+  CTele * Tel[14];
+  float theta;
+  float phi;
+  float getAngle(int itele, int ifront, int iback);
+  void findVectors(float*,float*,float*,float*,float*,float,float,float,float,float,float,float,float,float);
+};

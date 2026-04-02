@@ -1,0 +1,12 @@
+#include "CalCorrection.h"
+
+double calCorrection::deltaE_alpha(double E);
+{
+  const double c1 = 250;
+  const double c2 = .0032;
+  const double c3 = -4.875;
+  const double c4 = 0.0001;
+
+double deltaE = (energy_p2-c1)*c2 + c3 + c4*pow(energy_p2-c1,2);
+return deltaE;
+}

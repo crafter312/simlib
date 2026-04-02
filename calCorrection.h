@@ -1,0 +1,17 @@
+#include <cmath>
+//* correction to nominal alpha callibration
+using namespace std;
+
+const double dz_HiRA = 0.00455;
+const double scale_best = 1.59;
+const double Csires_best = .084;
+const double CsiresLi_best = .19;
+class calCorrection
+{
+   public:
+   double deltaE_alpha (double E);
+   double deltaE_He3 (double E);
+   double deltaE_Li6 (double E);
+   double deltaE_H2 (double E);
+   double deltaE_Be9 (double E);
+};

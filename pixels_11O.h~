@@ -1,0 +1,6 @@
+class pixels_O11
+{
+  pixels_O11();
+  tele TEL[14];
+
+};
