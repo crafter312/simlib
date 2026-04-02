@@ -1,5 +1,7 @@
 #include "array.h"
 
+#include <cmath>
+
 using namespace std;
 
 
